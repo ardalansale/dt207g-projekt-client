@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+    <title>Pizzeria Bianconeri | Admin</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Pizzeria Bianconeri</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html" class="active">Start / Logga in</a></li>
+                <li><a href="secret.html">Adminpanel</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Administrationspanel</h2>
+        <p>Logga in eller registrera ett adminkonto för att hantera pizzerians meny.</p>
+
+        <div id="error-message" class="error"></div>
+        <div id="success-message" class="success"></div>
+
+        <div style="display: flex; gap: 2rem; flex-wrap: wrap; margin-top: 20px;">
+            <!-- Inloggningsformulär -->
+            <div style="flex: 1; min-width: 250px;">
+                <h3>Logga in</h3>
+                <form id="login-form">
+                    <label for="login-username">Användarnamn:</label>
+                    <input type="text" id="login-username" autocomplete="off" required>
+
+                    <label for="login-password">Lösenord:</label>
+                    <input type="password" id="login-password" required>
+
+                    <button type="submit">Logga in</button>
+                </form>
+            </div>
+
+            <!-- Registreringsformulär -->
+            <div style="flex: 1; min-width: 250px;">
+                <h3>Skapa adminkonto</h3>
+                <form id="register-form">
+                    <label for="reg-username">Användarnamn:</label>
+                    <input type="text" id="reg-username" autocomplete="off" required>
+
+                    <label for="reg-password">Lösenord:</label>
+                    <input type="password" id="reg-password" required>
+
+                    <button type="submit">Registrera</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>DT207G Backend-baserad webbutveckling</p>
+        <p>Projektarbete - Pizzeria Bianconeri</p>
+        <p>MIUN VT2026</p>
+        <p>Ardalan Sale</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
