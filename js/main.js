@@ -1,5 +1,43 @@
 const API_URL = "https://dt207g-projekt-api-xqcb.onrender.com";
 
+// 0. Hämta och visa den publika menyn på index.html
+async function loadPublicMenu() {
+    const menuContainer = document.getElementById("public-menu-list");
+    if (!menuContainer) return; // Körs bara om elementet finns på sidan
+
+    try {
+        const response = await fetch(`${API_URL}/api/menu`);
+        const menu = await response.json();
+
+        if (response.ok) {
+            menuContainer.innerHTML = "";
+            if (menu.length === 0) {
+                menuContainer.innerHTML = "<p>Inga rätter i menyn för tillfället.</p>";
+                return;
+            }
+
+            menu.forEach(item => {
+                menuContainer.innerHTML += `
+                    <div class="menu-item">
+                        <h3>${item.title}</h3>
+                        <p>${item.description || "Ingen beskrivning angiven."}</p>
+                        <p class="price">${item.price} kr</p>
+                    </div>
+                `;
+            });
+        } else {
+            menuContainer.innerHTML = "<p>Kunde inte ladda menyn.</p>";
+        }
+    } catch (err) {
+        menuContainer.innerHTML = "<p>Fel vid anslutning till servern.</p>";
+    }
+}
+
+// Kör funktionen när index.html laddas
+document.addEventListener("DOMContentLoaded", () => {
+    loadPublicMenu();
+});
+
 // 1. Registrera ny användare
 const registerForm = document.getElementById("register-form");
 if (registerForm) {
