@@ -141,6 +141,7 @@ button:hover {
 
 /* Status- & felmeddelanden */
 .error {
+    display: none;
     color: #d9534f;
     background-color: #fdf7f7;
     border: 1px solid #d9534f;
@@ -151,6 +152,7 @@ button:hover {
 }
 
 .success {
+    display: none;
     color: #2b7515;
     background-color: #f4faf0;
     border: 1px solid #2b7515;

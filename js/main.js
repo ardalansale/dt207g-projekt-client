@@ -1,6 +1,6 @@
 const API_URL = "https://dt207g-projekt-api-xqcb.onrender.com";
 
-// 0. Hämta och visa den publika menyn på index.html
+// Hämta och visa menyn
 async function loadPublicMenu() {
     const menuContainer = document.getElementById("public-menu-list");
     if (!menuContainer) return; // Körs bara om elementet finns på sidan
@@ -60,14 +60,21 @@ if (registerForm) {
 
             if (response.ok) {
                 successEl.textContent = "Konto skapat! Du kan nu logga in.";
+                successEl.style.display = "block";
                 errorEl.textContent = "";
+                errorEl.style.display = "none";
                 registerForm.reset();
             } else {
                 errorEl.textContent = data.error || "Kunde inte skapa konto.";
+                errorEl.style.display = "block";
                 successEl.textContent = "";
+                successEl.style.display = "none";
             }
         } catch (err) {
             errorEl.textContent = "Kunde inte ansluta till servern.";
+            errorEl.style.display = "block";
+            successEl.textContent = "";
+            successEl.style.display = "none";
         }
     });
 }
@@ -93,39 +100,55 @@ if (loginForm) {
             const data = await response.json();
 
             if (response.ok) {
-                // Spara token i sessionStorage och omdirigera till secret.html
+                // Spara token i sessionStorage och omdirigera till admin.html
                 sessionStorage.setItem("token", data.token);
                 sessionStorage.setItem("username", username);
-                window.location.href = "secret.html";
+                window.location.href = "admin.html";
             } else {
                 errorEl.textContent = data.error || "Felaktiga inloggningsuppgifter.";
+                errorEl.style.display = "block";
                 successEl.textContent = "";
+                successEl.style.display = "none";
             }
         } catch (err) {
             errorEl.textContent = "Kunde inte ansluta till servern.";
+            errorEl.style.display = "block";
+            successEl.textContent = "";
+            successEl.style.display = "none";
         }
     });
 }
 
-// 3. Hantera admin-panelen på secret.html
-const menuList = document.getElementById("menu-list");
-if (menuList) {
+// 3. Hantera admin-panelen på admin.html
+const protectedContent = document.getElementById("protected-content");
+if (protectedContent) {
     const token = sessionStorage.getItem("token");
     const username = sessionStorage.getItem("username");
     const welcomeMsg = document.getElementById("welcome-msg");
-    const protectedContent = document.getElementById("protected-content");
+    const authContainer = document.getElementById("auth-container");
+    const logoutBtn = document.getElementById("logout-btn");
 
     if (!token) {
-        welcomeMsg.textContent = "Åtkomst nekad. Du måste logga in först.";
-        document.getElementById("error-message").textContent = "Ingen token hittades.";
+        // Ej inloggad: visa inloggningsformulär, dölj admin-innehåll och utloggningsknapp
+        if (authContainer) authContainer.style.display = "block";
+        protectedContent.style.display = "none";
+        if (logoutBtn) logoutBtn.style.display = "none";
     } else {
-        welcomeMsg.textContent = `Välkommen ${username || 'Admin'}! Du är inloggad.`;
+        // Inloggad: dölj formulär, visa admin-innehåll och utloggningsknapp
+        if (authContainer) authContainer.style.display = "none";
         protectedContent.style.display = "block";
+        if (logoutBtn) logoutBtn.style.display = "inline";
+        if (welcomeMsg) welcomeMsg.textContent = `Välkommen ${username || 'Admin'}! Du är inloggad.`;
         getMenu();
     }
 
     // Funktion för att hämta och visa menyn
     async function getMenu() {
+        const menuList = document.getElementById("menu-list");
+        if (!menuList) return;
+
+        const errorEl = document.getElementById("error-message");
+
         try {
             const response = await fetch(`${API_URL}/api/menu`);
             const menu = await response.json();
@@ -151,10 +174,16 @@ if (menuList) {
                     `;
                 });
             } else {
-                document.getElementById("error-message").textContent = "Kunde inte hämta menyn.";
+                if (errorEl) {
+                    errorEl.textContent = "Kunde inte hämta menyn.";
+                    errorEl.style.display = "block";
+                }
             }
         } catch (err) {
-            document.getElementById("error-message").textContent = "Fel vid hämtning av meny.";
+            if (errorEl) {
+                errorEl.textContent = "Fel vid hämtning av meny.";
+                errorEl.style.display = "block";
+            }
         }
     }
 
@@ -184,15 +213,22 @@ if (menuList) {
 
                 if (response.ok) {
                     successEl.textContent = "Rätten har lagts till i menyn!";
+                    successEl.style.display = "block";
                     errorEl.textContent = "";
+                    errorEl.style.display = "none";
                     addMenuForm.reset();
                     getMenu(); // Uppdatera listan direkt
                 } else {
                     errorEl.textContent = data.error || "Kunde inte lägga till rätten.";
+                    errorEl.style.display = "block";
                     successEl.textContent = "";
+                    successEl.style.display = "none";
                 }
             } catch (err) {
                 errorEl.textContent = "Fel vid anslutning till servern.";
+                errorEl.style.display = "block";
+                successEl.textContent = "";
+                successEl.style.display = "none";
             }
         });
     }
@@ -216,14 +252,21 @@ if (menuList) {
 
             if (response.ok) {
                 successEl.textContent = "Rätten har raderats!";
+                successEl.style.display = "block";
                 errorEl.textContent = "";
+                errorEl.style.display = "none";
                 getMenu(); // Uppdatera listan
             } else {
                 errorEl.textContent = data.error || "Kunde inte radera rätten.";
+                errorEl.style.display = "block";
                 successEl.textContent = "";
+                successEl.style.display = "none";
             }
         } catch (err) {
             errorEl.textContent = "Fel vid anslutning till servern.";
+            errorEl.style.display = "block";
+            successEl.textContent = "";
+            successEl.style.display = "none";
         }
     };
 }
@@ -235,6 +278,6 @@ if (logoutBtn) {
         e.preventDefault();
         sessionStorage.removeItem("token");
         sessionStorage.removeItem("username");
-        window.location.href = "index.html";
+        window.location.href = "admin.html";
     });
 }

@@ -6,7 +6,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
-    <title>Pizzeria Bianconeri</title>
+    <title>Pizzeria Bianconeri - Meny</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -14,62 +14,20 @@
         <h1>Pizzeria Bianconeri</h1>
         <nav>
             <ul>
-                <li><a href="#menu-section" class="active">Start / Meny</a></li>
-                <li><a href="#auth-section">Logga in</a></li>
-                <li><a href="secret.html">Adminpanel</a></li>
+                <li><a href="index.html" class="active">Meny</a></li>
+                <li><a href="admin.html">Admin</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
-        <!-- PUBLIK MENY (Synlig för alla besökare) -->
-        <section id="menu-section" style="margin-bottom: 40px;">
+        <!-- PUBLIK MENY -->
+        <section id="menu-section">
             <h2>Vår Meny</h2>
             <p>Välkommen till Pizzeria Bianconeri! Här är våra goda pizzor och rätter:</p>
             
             <div id="public-menu-list" style="margin-top: 20px;">
                 <p>Laddar menyn...</p>
-            </div>
-        </section>
-
-        <hr style="margin: 40px 0; border: 0; border-top: 1px solid #ccc;">
-
-        <!-- PERSONAL / INLOGGNING OG REGISTRERING -->
-        <section id="auth-section">
-            <h2>Personal & Administration</h2>
-            <p>Logga in eller registrera ett adminkonto för att hantera pizzerians meny.</p>
-
-            <div id="error-message" class="error"></div>
-            <div id="success-message" class="success"></div>
-
-            <div style="display: flex; gap: 2rem; flex-wrap: wrap; margin-top: 20px;">
-                <!-- Inloggningsformulär -->
-                <div style="flex: 1; min-width: 250px;">
-                    <h3>Logga in</h3>
-                    <form id="login-form">
-                        <label for="login-username">Användarnamn:</label>
-                        <input type="text" id="login-username" autocomplete="off" required>
-
-                        <label for="login-password">Lösenord:</label>
-                        <input type="password" id="login-password" required>
-
-                        <button type="submit">Logga in</button>
-                    </form>
-                </div>
-
-                <!-- Registreringsformulär -->
-                <div style="flex: 1; min-width: 250px;">
-                    <h3>Skapa adminkonto</h3>
-                    <form id="register-form">
-                        <label for="reg-username">Användarnamn:</label>
-                        <input type="text" id="reg-username" autocomplete="off" required>
-
-                        <label for="reg-password">Lösenord:</label>
-                        <input type="password" id="reg-password" required>
-
-                        <button type="submit">Registrera</button>
-                    </form>
-                </div>
             </div>
         </section>
     </main>

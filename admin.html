@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+    <title>Pizzeria Bianconeri | Admin</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Pizzeria Bianconeri</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Meny</a></li>
+                <li><a href="admin.html" class="active">Admin</a></li>
+                <li><a href="#" id="logout-btn" class="logout-link">Logga ut</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div id="error-message" class="error"></div>
+        <div id="success-message" class="success"></div>
+
+        <!-- DEL 1: VISAS OM ANVÄNDAREN INTE ÄR INLOGGAD -->
+        <div id="auth-container">
+            <h2>Personal & Administration</h2>
+            <p>Logga in eller registrera ett adminkonto för att hantera pizzerians meny.</p>
+
+            <div class="auth-grid">
+                <!-- Inloggningsformulär -->
+                <div class="auth-card">
+                    <h3>Logga in</h3>
+                    <form id="login-form">
+                        <label for="login-username">Användarnamn:</label>
+                        <input type="text" id="login-username" autocomplete="off" required>
+
+                        <label for="login-password">Lösenord:</label>
+                        <input type="password" id="login-password" required>
+
+                        <button type="submit">Logga in</button>
+                    </form>
+                </div>
+
+                <!-- Registreringsformulär -->
+                <div class="auth-card">
+                    <h3>Skapa adminkonto</h3>
+                    <form id="register-form">
+                        <label for="reg-username">Användarnamn:</label>
+                        <input type="text" id="reg-username" autocomplete="off" required>
+
+                        <label for="reg-password">Lösenord:</label>
+                        <input type="password" id="reg-password" required>
+
+                        <button type="submit">Registrera</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- DEL 2: SKYDDAT INNEHÅLL -->
+        <div id="protected-content" class="protected-section">
+            <h2 id="welcome-msg">Adminpanel – Hantera meny</h2>
+            <p>Här kan du lägga till nya rätter eller ta bort befintliga från pizzerians meny.</p>
+
+            <!-- Formulär för att lägga till ny rätt -->
+            <div class="add-menu-section">
+                <h3>Lägg till ny rätt i menyn</h3>
+                <form id="add-menu-form">
+                    <label for="title">Titel / Namn:</label>
+                    <input type="text" id="title" placeholder="t.ex. Pizza Vesuvio" required>
+
+                    <label for="description">Beskrivning:</label>
+                    <textarea id="description" rows="2" placeholder="t.ex. Tomatsås, ost, skinka"></textarea>
+
+                    <label for="price">Pris (kr):</label>
+                    <input type="number" id="price" placeholder="120" min="0" required>
+
+                    <button type="submit">Lägg till i menyn</button>
+                </form>
+            </div>
+
+            <!-- Tabell för att visa och radera menyartiklar -->
+            <h3>Aktuell meny</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Titel</th>
+                        <th>Beskrivning</th>
+                        <th>Pris</th>
+                        <th>Åtgärd</th>
+                    </tr>
+                </thead>
+                <tbody id="menu-list">
+                    <!-- Fylls i dynamiskt av JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <footer>
+        <p>DT207G Backend-baserad webbutveckling</p>
+        <p>Projektarbete - Pizzeria Bianconeri</p>
+        <p>MIUN VT2026</p>
+        <p>Ardalan Sale</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
