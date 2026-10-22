@@ -65,7 +65,6 @@ header h1 {
     font-size: 2.8rem;
     font-weight: 600;
     letter-spacing: 2px;
-    color: #111;
 }
 
 /* Navigering */
@@ -73,7 +72,6 @@ nav ul {
     display: flex;
     gap: 30px;
     list-style: none;
-    padding: 0;
     align-items: center;
     justify-content: center;
 }
@@ -109,16 +107,12 @@ footer {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    background-color: #fdfdfd;
 }
 
 footer p {
-    margin: 0 auto;
-    text-align: center;
     font-size: 0.9rem;
 }
 
-/* Personalinloggning i footern */
 footer a, .footer-admin a {
     color: #d4a5a5;
     text-decoration: none;
@@ -140,7 +134,7 @@ footer a:hover, .footer-admin a:hover {
     border: 1px solid #e5e5e5;
     padding: 3rem 2rem;
     margin-bottom: 3.5rem;
-    background-color: #ffffff;
+    background-color: #fff;
     border-radius: 4px;
 }
 
@@ -152,16 +146,14 @@ footer a:hover, .footer-admin a:hover {
     text-transform: uppercase;
 }
 
-.section-subtitle {
+.section-subtitle, .loading-text {
     text-align: center;
     color: #666;
-    margin-bottom: 2.5rem;
-    font-style: italic;
 }
 
-.loading-text {
-    text-align: center;
-    color: #666;
+.section-subtitle {
+    margin-bottom: 2.5rem;
+    font-style: italic;
 }
 
 /* Publik Meny */
@@ -173,25 +165,18 @@ footer a:hover, .footer-admin a:hover {
 }
 
 .menu-item {
-    background-color: transparent;
-    border: none;
     border-bottom: 1px dotted #e5e5e5;
-    padding: 0 0 20px 0;
-    border-radius: 0;
-    box-shadow: none;
-    transition: none;
+    padding-bottom: 20px;
 }
 
 .menu-item:last-child {
     border-bottom: none;
-    margin-bottom: 0;
     padding-bottom: 0;
 }
 
 .menu-item h3 {
     font-size: 1.25rem;
     margin-bottom: 4px;
-    color: #111;
     font-weight: 600;
 }
 
@@ -263,7 +248,6 @@ th, td {
 
 th {
     background-color: #fafafa;
-    color: #111;
     font-weight: 600;
     font-size: 0.9rem;
     letter-spacing: 0.5px;
@@ -274,7 +258,6 @@ tbody tr:nth-child(even) {
     background-color: #fcfcfc;
 }
 
-/* Utloggningslänk i admin */
 .logout-link {
     color: #d4a5a5 !important;
     display: none;
@@ -320,7 +303,7 @@ input, textarea, button {
     border-radius: 2px;
     font-size: 0.95rem;
     background-color: #fff;
-    transition: border-color 0.2s ease;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
 input:focus, textarea:focus {
@@ -328,22 +311,24 @@ input:focus, textarea:focus {
     border-color: #c5a059;
 }
 
-button, .submit-btn {
-    background-color: #111;
-    color: white;
+button, .submit-btn, .cancel-btn, .table-btn {
     border: none;
     cursor: pointer;
-    padding: 0.9rem;
-    font-size: 0.85rem;
     font-weight: 600;
     border-radius: 2px;
     text-transform: uppercase;
-    letter-spacing: 1.5px;
-    transition: background-color 0.2s ease;
+    color: #fff;
 }
 
-button:hover, .submit-btn:hover {
-    background-color: #c5a059;
+button, .submit-btn {
+    background-color: #111;
+    padding: 0.9rem;
+    font-size: 0.85rem;
+    letter-spacing: 1.5px;
+}
+
+button:hover, .submit-btn:hover, .edit-btn:hover {
+    background-color: #ff86ed;
 }
 
 .submit-btn {
@@ -352,17 +337,10 @@ button:hover, .submit-btn:hover {
 
 .cancel-btn {
     background-color: #64748b;
-    color: white;
-    border: none;
-    cursor: pointer;
     padding: 0.9rem;
     font-size: 0.85rem;
-    font-weight: 600;
-    border-radius: 2px;
-    text-transform: uppercase;
     letter-spacing: 1px;
     display: none;
-    transition: background-color 0.2s ease;
 }
 
 .cancel-btn:hover {
@@ -373,24 +351,14 @@ button:hover, .submit-btn:hover {
 .table-btn {
     padding: 0.4rem 0.8rem;
     font-size: 0.8rem;
-    font-family: inherit;
-    border: none;
-    border-radius: 2px;
-    cursor: pointer;
-    color: white;
     width: 75px;
     text-align: center;
-    text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
 .edit-btn {
     background-color: #111;
     margin-right: 5px;
-}
-
-.edit-btn:hover {
-    background-color: #c5a059;
 }
 
 .delete-btn {
@@ -402,26 +370,24 @@ button:hover, .submit-btn:hover {
 }
 
 /* Status- & felmeddelanden */
-.error {
+.error, .success {
     display: none;
-    color: #a33;
-    background-color: #fff8f8;
-    border: 1px solid #fca5a5;
     padding: 12px;
     border-radius: 2px;
     font-weight: 600;
     margin: 15px 0;
 }
 
+.error {
+    color: #a33;
+    background-color: #fff8f8;
+    border: 1px solid #fca5a5;
+}
+
 .success {
-    display: none;
     color: #2e7d32;
     background-color: #f4fbf4;
     border: 1px solid #86efac;
-    padding: 12px;
-    border-radius: 2px;
-    font-weight: 600;
-    margin: 15px 0;
 }
 
 
