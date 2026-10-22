@@ -1,9 +1,11 @@
 const API_URL = "https://dt207g-projekt-api-xqcb.onrender.com";
 
-// Hämta och visa menyn
+// 1. PUBLIK SIDA: MENY & BOKNING
+
+// Hämta och visa menyn på publika sidan
 async function loadPublicMenu() {
     const menuContainer = document.getElementById("public-menu-list");
-    if (!menuContainer) return; // Körs bara om elementet finns på sidan
+    if (!menuContainer) return;
 
     try {
         const response = await fetch(`${API_URL}/api/menu`);
@@ -12,7 +14,7 @@ async function loadPublicMenu() {
         if (response.ok) {
             menuContainer.innerHTML = "";
             if (menu.length === 0) {
-                menuContainer.innerHTML = "<p>Inga rätter i menyn för tillfället.</p>";
+                menuContainer.innerHTML = "<p class=\"loading-text\">Inga rätter i menyn för tillfället.</p>";
                 return;
             }
 
@@ -26,66 +28,68 @@ async function loadPublicMenu() {
                 `;
             });
         } else {
-            menuContainer.innerHTML = "<p>Kunde inte ladda menyn.</p>";
+            menuContainer.innerHTML = "<p class=\"loading-text\">Kunde inte ladda menyn.</p>";
         }
     } catch (err) {
-        menuContainer.innerHTML = "<p>Fel vid anslutning till servern.</p>";
+        menuContainer.innerHTML = "<p class=\"loading-text\">Fel vid anslutning till servern.</p>";
     }
 }
 
-// Kör funktionen när index.html laddas
-document.addEventListener("DOMContentLoaded", () => {
-    loadPublicMenu();
-});
-
-// 1. Registrera ny användare
-const registerForm = document.getElementById("register-form");
-if (registerForm) {
-    registerForm.addEventListener("submit", async (e) => {
+// Hantera inskick av bordsbokning (Publika sidan)
+const bookingForm = document.getElementById("booking-form");
+if (bookingForm) {
+    bookingForm.addEventListener("submit", async (e) => {
         e.preventDefault();
+        
+        const successDiv = document.getElementById("booking-success");
+        const errorDiv = document.getElementById("booking-error");
+        successDiv.style.display = "none";
+        errorDiv.style.display = "none";
 
-        const username = document.getElementById("reg-username").value;
-        const password = document.getElementById("reg-password").value;
-        const errorEl = document.getElementById("error-message");
-        const successEl = document.getElementById("success-message");
+        const bookingData = {
+            name: document.getElementById("book-name").value.trim(),
+            email: document.getElementById("book-email").value.trim(),
+            phone: document.getElementById("book-phone").value.trim(),
+            date: document.getElementById("book-date").value,
+            time: document.getElementById("book-time").value,
+            guests: parseInt(document.getElementById("book-guests").value),
+            message: document.getElementById("book-message").value.trim()
+        };
 
         try {
-            const response = await fetch(`${API_URL}/api/register`, {
+            const response = await fetch(`${API_URL}/api/bookings`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ username, password })
+                body: JSON.stringify(bookingData)
             });
 
             const data = await response.json();
+            if (!response.ok) throw new Error(data.error || "Kunde inte skicka bokning.");
 
-            if (response.ok) {
-                successEl.textContent = "Konto skapat! Du kan nu logga in.";
-                successEl.style.display = "block";
-                errorEl.textContent = "";
-                errorEl.style.display = "none";
-                registerForm.reset();
-            } else {
-                errorEl.textContent = data.error || "Kunde inte skapa konto.";
-                errorEl.style.display = "block";
-                successEl.textContent = "";
-                successEl.style.display = "none";
-            }
+            successDiv.textContent = "Tack för din bokning! Vi har tagit emot din reservation.";
+            successDiv.style.display = "block";
+            bookingForm.reset();
         } catch (err) {
-            errorEl.textContent = "Kunde inte ansluta till servern.";
-            errorEl.style.display = "block";
-            successEl.textContent = "";
-            successEl.style.display = "none";
+            errorDiv.textContent = err.message;
+            errorDiv.style.display = "block";
         }
     });
 }
 
-// 2. Logga in
+// Kör publika funktioner när DOM laddas
+document.addEventListener("DOMContentLoaded", () => {
+    loadPublicMenu();
+});
+
+// 2. INLOGGNING & UTLOGGNING
+
+// Logga in (Endast personal)
 const loginForm = document.getElementById("login-form");
 if (loginForm) {
     loginForm.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        const username = document.getElementById("login-username").value;
+        const username = document.getElementById("login-username").value.trim();
         const password = document.getElementById("login-password").value;
         const errorEl = document.getElementById("error-message");
         const successEl = document.getElementById("success-message");
@@ -100,51 +104,58 @@ if (loginForm) {
             const data = await response.json();
 
             if (response.ok) {
-                // Spara token i sessionStorage och omdirigera till admin.html
                 sessionStorage.setItem("token", data.token);
                 sessionStorage.setItem("username", username);
                 window.location.href = "admin.html";
             } else {
                 errorEl.textContent = data.error || "Felaktiga inloggningsuppgifter.";
                 errorEl.style.display = "block";
-                successEl.textContent = "";
-                successEl.style.display = "none";
+                if (successEl) successEl.style.display = "none";
             }
         } catch (err) {
             errorEl.textContent = "Kunde inte ansluta till servern.";
             errorEl.style.display = "block";
-            successEl.textContent = "";
-            successEl.style.display = "none";
+            if (successEl) successEl.style.display = "none";
         }
     });
 }
 
-// 3. Hantera admin-panelen på admin.html
+// Utloggning
+const logoutBtn = document.getElementById("logout-btn");
+if (logoutBtn) {
+    logoutBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        sessionStorage.removeItem("token");
+        sessionStorage.removeItem("username");
+        window.location.href = "admin.html";
+    });
+}
+
+// 3. ADMINPANELEN (Skyddat innehåll)
+
 const protectedContent = document.getElementById("protected-content");
 if (protectedContent) {
     const token = sessionStorage.getItem("token");
-    const username = sessionStorage.getItem("username");
-    const welcomeMsg = document.getElementById("welcome-msg");
     const authContainer = document.getElementById("auth-container");
-    const logoutBtn = document.getElementById("logout-btn");
 
-    let menuData = []; // Sparar hämtade rätter för att underlätta redigering
+    let menuData = []; // Sparar hämtade rätter för redigering
 
     if (!token) {
-        // Ej inloggad: visa inloggningsformulär, dölj admin-innehåll och utloggningsknapp
         if (authContainer) authContainer.style.display = "block";
         protectedContent.style.display = "none";
         if (logoutBtn) logoutBtn.style.display = "none";
     } else {
-        // Inloggad: dölj formulär, visa admin-innehåll och utloggningsknapp
         if (authContainer) authContainer.style.display = "none";
         protectedContent.style.display = "block";
         if (logoutBtn) logoutBtn.style.display = "inline";
-        if (welcomeMsg) welcomeMsg.textContent = `Välkommen ${username || 'Admin'}! Du är inloggad.`;
+        
+        // Hämta data till adminpanelen
         getMenu();
+        fetchAdminBookings();
     }
 
-    // Funktion för att hämta och visa menyn
+    // --- MENY-HANTERING I ADMIN ---
+
     async function getMenu() {
         const menuList = document.getElementById("menu-list");
         if (!menuList) return;
@@ -156,27 +167,27 @@ if (protectedContent) {
             const menu = await response.json();
 
             if (response.ok) {
-                menuData = menu; // Spara till lokal array
+                menuData = menu;
                 menuList.innerHTML = "";
                 if (menu.length === 0) {
-                    menuList.innerHTML = `<tr><td colspan="5">Inga rätter i menyn ännu.</td></tr>`;
+                    menuList.innerHTML = `<tr><td colspan="5" style="text-align: center;">Inga rätter i menyn ännu.</td></tr>`;
                     return;
                 }
 
-menu.forEach((item, index) => {
-    menuList.innerHTML += `
-        <tr>
-            <td>${index + 1}</td>
-            <td><strong>${item.title}</strong></td>
-            <td>${item.description || '-'}</td>
-            <td style="white-space: nowrap;">${item.price} kr</td>
-            <td>
-                <button type="button" onclick="prepareEdit(${item.id})" class="table-btn edit-btn">Ändra</button>
-                <button type="button" onclick="deleteMenuItem(${item.id})" class="table-btn delete-btn">Radera</button>
-            </td>
-        </tr>
-    `;
-});
+                menu.forEach((item, index) => {
+                    menuList.innerHTML += `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td><strong>${item.title}</strong></td>
+                            <td>${item.description || "-"}</td>
+                            <td style="white-space: nowrap;">${item.price} kr</td>
+                            <td style="white-space: nowrap;">
+                                <button type="button" onclick="prepareEdit(${item.id})" class="table-btn edit-btn">Ändra</button>
+                                <button type="button" onclick="deleteMenuItem(${item.id})" class="table-btn delete-btn">Radera</button>
+                            </td>
+                        </tr>
+                    `;
+                });
             } else {
                 if (errorEl) {
                     errorEl.textContent = "Kunde inte hämta menyn.";
@@ -191,7 +202,6 @@ menu.forEach((item, index) => {
         }
     }
 
-    // Förbered formuläret för att redigera en befintlig rätt
     window.prepareEdit = function(id) {
         const item = menuData.find(m => m.id === id);
         if (!item) return;
@@ -205,10 +215,9 @@ menu.forEach((item, index) => {
         document.getElementById("submit-btn").textContent = "Spara ändringar";
         document.getElementById("cancel-edit-btn").style.display = "inline-block";
 
-        document.querySelector(".add-menu-section").scrollIntoView({ behavior: 'smooth' });
+        document.getElementById("add-menu-form").scrollIntoView({ behavior: "smooth" });
     };
 
-    // Hantera avbryt-knapp vid redigering
     const cancelEditBtn = document.getElementById("cancel-edit-btn");
     if (cancelEditBtn) {
         cancelEditBtn.addEventListener("click", () => {
@@ -219,12 +228,11 @@ menu.forEach((item, index) => {
     function resetFormState() {
         document.getElementById("edit-id").value = "";
         document.getElementById("add-menu-form").reset();
-        document.getElementById("form-title").textContent = "Lägg till ny rätt i menyn";
+        document.getElementById("form-title").textContent = "Lägg till ny rätt";
         document.getElementById("submit-btn").textContent = "Lägg till i menyn";
         document.getElementById("cancel-edit-btn").style.display = "none";
     }
 
-    // Lägg till ny rätt eller uppdatera befintlig rätt
     const addMenuForm = document.getElementById("add-menu-form");
     if (addMenuForm) {
         addMenuForm.addEventListener("submit", async (e) => {
@@ -237,7 +245,6 @@ menu.forEach((item, index) => {
             const errorEl = document.getElementById("error-message");
             const successEl = document.getElementById("success-message");
 
-            // Välj URL och metod beroende på om vi redigerar eller skapar nytt
             const url = editId ? `${API_URL}/api/menu/${editId}` : `${API_URL}/api/menu`;
             const method = editId ? "PUT" : "POST";
 
@@ -256,27 +263,23 @@ menu.forEach((item, index) => {
                 if (response.ok) {
                     successEl.textContent = editId ? "Rätten har uppdaterats!" : "Rätten har lagts till i menyn!";
                     successEl.style.display = "block";
-                    errorEl.textContent = "";
                     errorEl.style.display = "none";
                     
                     resetFormState();
-                    getMenu(); // Uppdatera listan direkt
+                    getMenu();
                 } else {
                     errorEl.textContent = data.error || "Kunde inte spara rätten.";
                     errorEl.style.display = "block";
-                    successEl.textContent = "";
                     successEl.style.display = "none";
                 }
             } catch (err) {
                 errorEl.textContent = "Fel vid anslutning till servern.";
                 errorEl.style.display = "block";
-                successEl.textContent = "";
                 successEl.style.display = "none";
             }
         });
     }
 
-    // Global funktion för att radera en rätt
     window.deleteMenuItem = async function(id) {
         if (!confirm("Är du säker på att du vill radera denna rätt?")) return;
 
@@ -286,9 +289,7 @@ menu.forEach((item, index) => {
         try {
             const response = await fetch(`${API_URL}/api/menu/${id}`, {
                 method: "DELETE",
-                headers: {
-                    "Authorization": `Bearer ${token}`
-                }
+                headers: { "Authorization": `Bearer ${token}` }
             });
 
             const data = await response.json();
@@ -296,31 +297,75 @@ menu.forEach((item, index) => {
             if (response.ok) {
                 successEl.textContent = "Rätten har raderats!";
                 successEl.style.display = "block";
-                errorEl.textContent = "";
                 errorEl.style.display = "none";
-                getMenu(); // Uppdatera listan
+                getMenu();
             } else {
                 errorEl.textContent = data.error || "Kunde inte radera rätten.";
                 errorEl.style.display = "block";
-                successEl.textContent = "";
                 successEl.style.display = "none";
             }
         } catch (err) {
             errorEl.textContent = "Fel vid anslutning till servern.";
             errorEl.style.display = "block";
-            successEl.textContent = "";
             successEl.style.display = "none";
         }
     };
-}
 
-// 4. Utloggning
-const logoutBtn = document.getElementById("logout-btn");
-if (logoutBtn) {
-    logoutBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        sessionStorage.removeItem("token");
-        sessionStorage.removeItem("username");
-        window.location.href = "admin.html";
-    });
+
+    // --- BOKNINGS-HANTERING I ADMIN ---
+
+    async function fetchAdminBookings() {
+        const bookingsList = document.getElementById("admin-bookings-list");
+        if (!bookingsList) return;
+
+        try {
+            const response = await fetch(`${API_URL}/api/bookings`, {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+            const bookings = await response.json();
+            
+            if (!response.ok) throw new Error("Kunde inte hämta bokningar.");
+
+            bookingsList.innerHTML = "";
+            if (bookings.length === 0) {
+                bookingsList.innerHTML = `<tr><td colspan="7" style="text-align: center;">Inga bokningar hittades.</td></tr>`;
+                return;
+            }
+
+            bookings.forEach((booking, index) => {
+                bookingsList.innerHTML += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td><strong>${booking.name}</strong></td>
+                        <td>${booking.email}<br>${booking.phone}</td>
+                        <td style="white-space: nowrap;">${booking.date} kl ${booking.time}</td>
+                        <td>${booking.guests} st</td>
+                        <td>${booking.message || "-"}</td>
+                        <td style="white-space: nowrap;">
+                            <button type="button" onclick="deleteBooking(${booking.id})" class="table-btn delete-btn">Radera</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    window.deleteBooking = async function(id) {
+        if (!confirm("Är du säker på att du vill radera denna bokning?")) return;
+
+        try {
+            const response = await fetch(`${API_URL}/api/bookings/${id}`, {
+                method: "DELETE",
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+
+            if (!response.ok) throw new Error("Kunde inte radera bokningen.");
+
+            fetchAdminBookings();
+        } catch (err) {
+            alert(err.message);
+        }
+    };
 }
