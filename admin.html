@@ -6,7 +6,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
-    <title>Pizzeria Bianconeri | Admin</title>
+    <title>Pizzeria Bianconeri | Personal</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -14,8 +14,7 @@
         <h1>Pizzeria Bianconeri</h1>
         <nav>
             <ul>
-                <li><a href="index.html">Meny</a></li>
-                <li><a href="admin.html" class="active">Admin</a></li>
+                <li><a href="index.html">Till publika sidan</a></li>
                 <li><a href="#" id="logout-btn" class="logout-link">Logga ut</a></li>
             </ul>
         </nav>
@@ -25,50 +24,29 @@
         <div id="error-message" class="error"></div>
         <div id="success-message" class="success"></div>
 
-        <!-- Visas om användaren inte är inloggad -->
-        <div id="auth-container">
-            <h2>Personal & Administration</h2>
-            <p>Logga in eller registrera ett adminkonto för att hantera pizzerians meny.</p>
+        <!-- Visas endast om användaren inte är inloggad -->
+        <section id="auth-container" class="content-section">
+            <h2>Personalinloggning</h2>
+            <p class="section-subtitle">Endast för behörig personal.</p>
 
-            <div class="auth-grid">
-                <!-- Inloggningsformulär -->
-                <div class="auth-card">
-                    <h3>Logga in</h3>
-                    <form id="login-form">
-                        <label for="login-username">Användarnamn:</label>
-                        <input type="text" id="login-username" autocomplete="off" required>
+            <form id="login-form" class="admin-login-form">
+                <label for="login-username">Användarnamn:</label>
+                <input type="text" id="login-username" autocomplete="off" required>
 
-                        <label for="login-password">Lösenord:</label>
-                        <input type="password" id="login-password" required>
+                <label for="login-password">Lösenord:</label>
+                <input type="password" id="login-password" required>
 
-                        <button type="submit">Logga in</button>
-                    </form>
-                </div>
+                <button type="submit" class="submit-btn">Logga in</button>
+            </form>
+        </section>
 
-                <!-- Registreringsformulär -->
-                <div class="auth-card">
-                    <h3>Skapa adminkonto</h3>
-                    <form id="register-form">
-                        <label for="reg-username">Användarnamn:</label>
-                        <input type="text" id="reg-username" autocomplete="off" required>
-
-                        <label for="reg-password">Lösenord:</label>
-                        <input type="password" id="reg-password" required>
-
-                        <button type="submit">Registrera</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <!-- DEL 2: SKYDDAT INNEHÅLL -->
+        <!-- DEL 2: SKYDDAT INNEHÅLL (Visas efter godkänd inloggning) -->
         <div id="protected-content" class="protected-section">
-            <h2 id="welcome-msg">Adminpanel – Hantera meny</h2>
-            <p>Här kan du lägga till nya rätter, redigera befintliga eller ta bort rätter från pizzerians meny.</p>
+            <!-- Sektion: Lägg till / redigera rätt -->
+            <section class="content-section">
+                <h2 id="form-title">Lägg till ny rätt</h2>
+                <p class="section-subtitle">Skapa en ny rätt eller redigera en befintlig i menyn.</p>
 
-            <!-- Formulär för att lägga till / redigera rätt -->
-            <div class="add-menu-section">
-                <h3 id="form-title">Lägg till ny rätt i menyn</h3>
                 <form id="add-menu-form">
                     <!-- Dolt fält för att lagra ID vid redigering -->
                     <input type="hidden" id="edit-id" value="">
@@ -82,37 +60,63 @@
                     <label for="price">Pris (kr):</label>
                     <input type="number" id="price" placeholder="0" min="0" required>
 
-                    <div style="display: flex; gap: 10px; align-items: center;">
-                        <button type="submit" id="submit-btn">Lägg till i menyn</button>
-                        <button type="button" id="cancel-edit-btn" style="display: none; background-color: #64748b;">Avbryt</button>
+                    <div class="form-btn-group">
+                        <button type="submit" id="submit-btn" class="submit-btn">Lägg till i menyn</button>
+                        <button type="button" id="cancel-edit-btn" class="cancel-btn">Avbryt</button>
                     </div>
                 </form>
-            </div>
+            </section>
 
-            <!-- Tabell för att visa, ändra och radera menyartiklar -->
-            <h3>Aktuell meny</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Titel</th>
-                        <th>Beskrivning</th>
-                        <th>Pris</th>
-                        <th>Åtgärd</th>
-                    </tr>
-                </thead>
-                <tbody id="menu-list">
-                    <!-- Fylls i dynamiskt av JavaScript -->
-                </tbody>
-            </table>
+            <!-- Sektion: Aktuell meny -->
+            <section class="content-section">
+                <h2>Aktuell meny</h2>
+                <p class="section-subtitle">Hantera befintliga rätter i databasen.</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Titel</th>
+                            <th>Beskrivning</th>
+                            <th>Pris</th>
+                            <th>Åtgärd</th>
+                        </tr>
+                    </thead>
+                    <tbody id="menu-list">
+                        <!-- Fylls i dynamiskt av JavaScript -->
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Sektion: Hantera Bordsbokningar -->
+            <section class="content-section">
+                <h2>Bordsbokningar</h2>
+                <p class="section-subtitle">Inkomna reservationer från gäster.</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Namn</th>
+                            <th>Kontakt</th>
+                            <th>Datum / Tid</th>
+                            <th>Gäster</th>
+                            <th>Meddelande</th>
+                            <th>Åtgärder</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-bookings-list">
+                        <!-- Fylls i dynamiskt av JavaScript -->
+                    </tbody>
+                </table>
+            </section>
         </div>
     </main>
 
     <footer>
-        <p>DT207G Backend-baserad webbutveckling</p>
-        <p>Projektarbete - Pizzeria Bianconeri</p>
-        <p>MIUN VT2026</p>
-        <p>Ardalan Sale</p>
+        <p>Pizzeria Bianconeri &bull; Personalportal</p>
+        <p>DT207G Backend-baserad webbutveckling &bull; MIUN VT2026 &bull; Ardalan Sale</p>
+        <p class="footer-admin"><a href="index.html">Tillbaka till startsidan</a></p>
     </footer>
 
     <script src="js/main.js"></script>

@@ -163,20 +163,20 @@ if (protectedContent) {
                     return;
                 }
 
-                menu.forEach(item => {
-                    menuList.innerHTML += `
-                        <tr>
-                            <td>${item.id}</td>
-                            <td><strong>${item.title}</strong></td>
-                            <td>${item.description || '-'}</td>
-                            <td>${item.price} kr</td>
-                            <td>
-                                <button type="button" onclick="prepareEdit(${item.id})" style="background-color: #2563eb; color: white; padding: 0.3rem 0.6rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; margin-right: 5px;">Ändra</button>
-                                <button type="button" onclick="deleteMenuItem(${item.id})" style="background-color: #dc2626; color: white; padding: 0.3rem 0.6rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer;">Radera</button>
-                            </td>
-                        </tr>
-                    `;
-                });
+menu.forEach((item, index) => {
+    menuList.innerHTML += `
+        <tr>
+            <td>${index + 1}</td>
+            <td><strong>${item.title}</strong></td>
+            <td>${item.description || '-'}</td>
+            <td style="white-space: nowrap;">${item.price} kr</td>
+            <td>
+                <button type="button" onclick="prepareEdit(${item.id})" class="table-btn edit-btn">Ändra</button>
+                <button type="button" onclick="deleteMenuItem(${item.id})" class="table-btn delete-btn">Radera</button>
+            </td>
+        </tr>
+    `;
+});
             } else {
                 if (errorEl) {
                     errorEl.textContent = "Kunde inte hämta menyn.";

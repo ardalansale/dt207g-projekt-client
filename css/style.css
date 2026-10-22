@@ -1,8 +1,9 @@
+/* 1. GRUNDINSTÄLLNINGAR & TYPOGRAFI */
 *, *::before, *::after {
     box-sizing: border-box;
 }
 
-* {
+body, h1, h2, h3, h4, p, ul {
     margin: 0;
     padding: 0;
 }
@@ -16,10 +17,10 @@ body {
     font-family: 'DM Sans', Arial, sans-serif;
     max-width: 800px;
     margin: auto;
-    padding: 20px;
-    background-color: #fcfcfc;
-    color: #222;
-    line-height: 1.5;
+    padding: 40px 20px;
+    background-color: #fdfdfd;
+    color: #1a1a1a;
+    line-height: 1.8;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeSpeed;
     display: flex;
@@ -31,7 +32,9 @@ main {
 }
 
 h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', Georgia, serif;
     text-wrap: balance;
+    color: #111;
 }
 
 p, li {
@@ -39,239 +42,74 @@ p, li {
 }
 
 :focus-visible {
-    outline: 2px solid #2563eb;
-    outline-offset: 4px;
+    outline: 1px solid #c5a059;
+    outline-offset: 3px;
 }
+
+
+/* 2. GEMENSAMMA KOMPONENTER */
 
 /* Header */
 header {
-    margin-bottom: 30px;
-    border-bottom: 1px solid #e5e7eb;
-    padding-bottom: 15px;
+    margin-bottom: 40px;
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 20px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    align-items: center;
+    gap: 15px;
+    text-align: center;
 }
 
 header h1 {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: 2.2rem;
-    font-weight: 700;
+    font-size: 2.8rem;
+    font-weight: 600;
+    letter-spacing: 2px;
     color: #111;
-    letter-spacing: -0.5px;
 }
 
 /* Navigering */
 nav ul {
     display: flex;
-    gap: 20px;
+    gap: 30px;
     list-style: none;
     padding: 0;
     align-items: center;
+    justify-content: center;
 }
 
 nav a {
-    color: #2563eb;
+    color: #555;
     text-decoration: none;
-    font-size: 1.05rem;
+    font-size: 0.95rem;
     font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
 }
 
 nav a:hover {
-    text-decoration: underline;
+    color: #c5a059;
 }
 
 nav a.active {
-    font-weight: bold;
-}
-
-/* Utloggningslänk i menyn */
-.logout-link {
-    color: #dc2626 !important;
-    display: none;
-}
-
-/* Publik Meny - Kort & Layout */
-#public-menu-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-top: 15px;
-}
-
-.menu-item {
-    background-color: #ffffff;
-    border: 1px solid #eaeaea;
-    border-radius: 12px;
-    padding: 18px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.menu-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
-}
-
-.menu-item h3 {
-    margin-bottom: 6px;
     color: #111;
-}
-
-.menu-item p {
-    color: #555;
-    margin-bottom: 8px;
-    line-height: 1.4;
-}
-
-.menu-item .price {
-    font-weight: bold;
-    color: #2563eb;
-    font-size: 1.1rem;
-}
-
-/* Admin: Inloggningsgrid och sektioner */
-.auth-grid {
-    display: flex;
-    gap: 2rem;
-    flex-wrap: wrap;
-    margin-top: 20px;
-}
-
-.auth-card {
-    flex: 1;
-    min-width: 250px;
-    background-color: #ffffff;
-    border: 1px solid #eaeaea;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-}
-
-.protected-section {
-    display: none;
-}
-
-.add-menu-section {
-    margin: 30px 0;
-    background-color: #ffffff;
-    border: 1px solid #eaeaea;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-}
-
-/* Tabell och adminvyer */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-    border-radius: 8px;
-    overflow: hidden;
-    border: 1px solid #e5e7eb;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-}
-
-th, td {
-    border-bottom: 1px solid #e5e7eb;
-    padding: 12px;
-    text-align: left;
-}
-
-th {
-    background-color: #f8fafc;
-    color: #334155;
     font-weight: 600;
-}
-
-tbody tr:nth-child(even) {
-    background-color: #f8fafc;
-}
-
-/* Formulär */
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-top: 10px;
-}
-
-label {
-    font-weight: 500;
-    font-size: 0.9rem;
-    color: #334155;
-}
-
-input, textarea, button {
-    padding: 10px 12px;
-    font-family: inherit;
-    border: 1px solid #cbd5e1;
-    border-radius: 8px;
-    font-size: 0.95rem;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-input:focus, textarea:focus {
-    outline: none;
-    border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
-}
-
-button {
-    background-color: #2563eb;
-    color: white;
-    border: none;
-    cursor: pointer;
-    padding: 0.8rem;
-    font-size: 1rem;
-    font-weight: 600;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
-    transition: background-color 0.2s ease, transform 0.1s ease;
-}
-
-button:hover {
-    background-color: #1d4ed8;
-    transform: translateY(-1px);
-}
-
-/* Status- & felmeddelanden */
-.error {
-    display: none;
-    color: #dc2626;
-    background-color: #fef2f2;
-    border: 1px solid #fca5a5;
-    padding: 12px;
-    border-radius: 8px;
-    font-weight: 600;
-    margin: 15px 0;
-}
-
-.success {
-    display: none;
-    color: #16a34a;
-    background-color: #f0fdf4;
-    border: 1px solid #86efac;
-    padding: 12px;
-    border-radius: 8px;
-    font-weight: 600;
-    margin: 15px 0;
+    border-bottom: 1px solid #c5a059;
+    padding-bottom: 2px;
 }
 
 /* Footer */
 footer {
     text-align: center;
-    padding: 16px;
-    color: #334155;
-    margin-top: 50px;
-    border-radius: 12px;
-    border: 1px solid #e2e8f0;
+    padding: 30px 20px;
+    color: #666;
+    margin-top: 60px;
+    border-top: 1px solid #e5e5e5;
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
-    background-color: #fff;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+    gap: 0.5rem;
+    background-color: #fdfdfd;
 }
 
 footer p {
@@ -280,6 +118,314 @@ footer p {
     font-size: 0.9rem;
 }
 
+/* Personalinloggning i footern */
+footer a, .footer-admin a {
+    color: #d4a5a5;
+    text-decoration: none;
+}
+
+footer a:hover, .footer-admin a:hover {
+    text-decoration: underline;
+}
+
+.footer-admin {
+    margin-top: 0.8rem;
+}
+
+
+/* 3. PUBLIKA SIDAN */
+
+/* Sektionsinramning */
+.content-section {
+    border: 1px solid #e5e5e5;
+    padding: 3rem 2rem;
+    margin-bottom: 3.5rem;
+    background-color: #ffffff;
+    border-radius: 4px;
+}
+
+.content-section h2 {
+    font-size: 2.2rem;
+    text-align: center;
+    letter-spacing: 1.5px;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+}
+
+.section-subtitle {
+    text-align: center;
+    color: #666;
+    margin-bottom: 2.5rem;
+    font-style: italic;
+}
+
+.loading-text {
+    text-align: center;
+    color: #666;
+}
+
+/* Publik Meny */
+#public-menu-list {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    margin-top: 25px;
+}
+
+.menu-item {
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px dotted #e5e5e5;
+    padding: 0 0 20px 0;
+    border-radius: 0;
+    box-shadow: none;
+    transition: none;
+}
+
+.menu-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.menu-item h3 {
+    font-size: 1.25rem;
+    margin-bottom: 4px;
+    color: #111;
+    font-weight: 600;
+}
+
+.menu-item p {
+    color: #666;
+    margin-bottom: 6px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.menu-item .price {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 600;
+    color: #c5a059;
+    font-size: 1.15rem;
+}
+
+/* Om oss / Öppettider grid */
+.about-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3rem;
+    justify-content: space-between;
+    margin-top: 2rem;
+}
+
+.about-column {
+    flex: 1;
+    min-width: 250px;
+}
+
+.about-column h3 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.about-column p {
+    margin-bottom: 0.4rem;
+}
+
+
+/* 4. ADMINPANELEN */
+
+.admin-login-form {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.protected-section {
+    display: none;
+}
+
+/* Admin Tabeller */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border: 1px solid #e5e5e5;
+    background-color: #fff;
+}
+
+th, td {
+    border-bottom: 1px solid #e5e5e5;
+    padding: 14px;
+    text-align: left;
+}
+
+th {
+    background-color: #fafafa;
+    color: #111;
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #fcfcfc;
+}
+
+/* Utloggningslänk i admin */
+.logout-link {
+    color: #d4a5a5 !important;
+    display: none;
+}
+
+
+/* 5. FORMULÄR, KNAPPAR & MEDDELANDEN */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.form-row {
+    display: flex;
+    gap: 1rem;
+}
+
+.form-col {
+    flex: 1;
+}
+
+.form-btn-group {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 10px;
+}
+
+label {
+    font-weight: 500;
+    font-size: 0.85rem;
+    color: #333;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+input, textarea, button {
+    padding: 12px;
+    font-family: inherit;
+    border: 1px solid #d5d5d5;
+    border-radius: 2px;
+    font-size: 0.95rem;
+    background-color: #fff;
+    transition: border-color 0.2s ease;
+}
+
+input:focus, textarea:focus {
+    outline: none;
+    border-color: #c5a059;
+}
+
+button, .submit-btn {
+    background-color: #111;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 0.9rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: 2px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    transition: background-color 0.2s ease;
+}
+
+button:hover, .submit-btn:hover {
+    background-color: #c5a059;
+}
+
+.submit-btn {
+    margin-top: 10px;
+}
+
+.cancel-btn {
+    background-color: #64748b;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 0.9rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: 2px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: none;
+    transition: background-color 0.2s ease;
+}
+
+.cancel-btn:hover {
+    background-color: #475569;
+}
+
+/* Admin-knappar (Ändra / Radera) */
+.table-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+    font-family: inherit;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    color: white;
+    width: 75px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.edit-btn {
+    background-color: #111;
+    margin-right: 5px;
+}
+
+.edit-btn:hover {
+    background-color: #c5a059;
+}
+
+.delete-btn {
+    background-color: #444;
+}
+
+.delete-btn:hover {
+    background-color: #a33;
+}
+
+/* Status- & felmeddelanden */
+.error {
+    display: none;
+    color: #a33;
+    background-color: #fff8f8;
+    border: 1px solid #fca5a5;
+    padding: 12px;
+    border-radius: 2px;
+    font-weight: 600;
+    margin: 15px 0;
+}
+
+.success {
+    display: none;
+    color: #2e7d32;
+    background-color: #f4fbf4;
+    border: 1px solid #86efac;
+    padding: 12px;
+    border-radius: 2px;
+    font-weight: 600;
+    margin: 15px 0;
+}
+
+
+/* 6. TILLGÄNGLIGHET & MEDIA QUERIES */
 @media (prefers-reduced-motion: reduce) {
     html {
         scroll-behavior: auto !important;

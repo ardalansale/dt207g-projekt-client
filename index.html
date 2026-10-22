@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
-    <title>Pizzeria Bianconeri - Meny</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <title>Pizzeria Bianconeri</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -14,29 +14,89 @@
         <h1>Pizzeria Bianconeri</h1>
         <nav>
             <ul>
-                <li><a href="index.html" class="active">Meny</a></li>
-                <li><a href="admin.html">Admin</a></li>
+                <li><a href="#menu-section" class="active">Meny</a></li>
+                <li><a href="#booking-section">Boka bord</a></li>
+                <li><a href="#about-section">Om oss</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
-        <!-- Meny -->
-                <section id="menu-section">
+        <!-- Meny-sektion -->
+        <section id="menu-section" class="content-section">
             <h2>Vår Meny</h2>
-            <p>Välkommen till Pizzeria Bianconeri! Här är våra goda pizzor och rätter:</p>
+            <p class="section-subtitle">Njut av våra handgjorda pizzor bakade med utvalda råvaror och passion.</p>
             
             <div id="public-menu-list" class="public-menu-container">
-                <p>Laddar menyn...</p>
+                <p class="loading-text">Laddar menyn...</p>
+            </div>
+        </section>
+
+        <!-- Bordsboknings-sektion -->
+        <section id="booking-section" class="content-section">
+            <h2>Boka bord</h2>
+            <p class="section-subtitle">Varmt välkommen att reservera ett bord hos oss.</p>
+            
+            <form id="booking-form">
+                <div id="booking-success" class="success"></div>
+                <div id="booking-error" class="error"></div>
+
+                <label for="book-name">Namn</label>
+                <input type="text" id="book-name" required>
+
+                <label for="book-email">E-post</label>
+                <input type="email" id="book-email" required>
+
+                <label for="book-phone">Telefonnummer</label>
+                <input type="tel" id="book-phone" required>
+
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="book-date">Datum</label>
+                        <input type="date" id="book-date" required>
+                    </div>
+                    <div class="form-col">
+                        <label for="book-time">Tid</label>
+                        <input type="time" id="book-time" required>
+                    </div>
+                </div>
+
+                <label for="book-guests">Antal gäster</label>
+                <input type="number" id="book-guests" min="1" max="20" value="2" required>
+
+                <label for="book-message">Meddelande / Allergier (valfritt)</label>
+                <textarea id="book-message" rows="3" placeholder="Övriga önskemål..."></textarea>
+
+                <button type="submit" class="submit-btn">Skicka bokningsförfrågan</button>
+            </form>
+        </section>
+
+        <!-- Om oss & Öppettider-sektion -->
+        <section id="about-section" class="content-section">
+            <h2>Om oss & Öppettider</h2>
+            <p class="section-subtitle">Pizzeria Bianconeri förenar traditionella italienska smaker med en modern, elegant atmosfär. Vår passion hämtar näring från den italienska fotbollskulturen, den avslappnade gemenskapen runt matbordet och värmen i en riktig familjemiddag. Hos oss står det genuint italienska hantverket i centrum, där varje pizza bakas på noggrant utvalda råvaror för att erbjuda en minnesvärd måltid i en välkomnande och levande miljö.</p>
+            
+            <div class="about-grid">
+                <div class="about-column">
+                    <h3>Öppettider</h3>
+                    <p><strong>Måndag – Torsdag:</strong> 11:00 – 21:00</p>
+                    <p><strong>Fredag – Lördag:</strong> 11:00 – 22:00</p>
+                    <p><strong>Söndag:</strong> 12:00 – 21:00</p>
+                </div>
+                <div class="about-column">
+                    <h3>Hitta hit</h3>
+                    <p><strong>Adress:</strong> Norrtäljegatan 90A, Uppsala</p>
+                    <p><strong>Telefon:</strong> 073-123 45 67</p>
+                    <p><strong>E-post:</strong> info@pizzeriabianconeri.se</p>
+                </div>
             </div>
         </section>
     </main>
 
     <footer>
-        <p>DT207G Backend-baserad webbutveckling</p>
-        <p>Projektarbete - Pizzeria Bianconeri</p>
-        <p>MIUN VT2026</p>
-        <p>Ardalan Sale</p>
+        <p>Pizzeria Bianconeri &bull; Norrtäljegatan 90A, Uppsala &bull; Tel: 073-123 45 67</p>
+        <p>DT207G Backend-baserad webbutveckling &bull; MIUN VT2026 &bull; Ardalan Sale</p>
+        <p class="footer-admin"><a href="admin.html">Personal</a></p>
     </footer>
 
     <script src="js/main.js"></script>
