@@ -128,6 +128,8 @@ if (protectedContent) {
     const authContainer = document.getElementById("auth-container");
     const logoutBtn = document.getElementById("logout-btn");
 
+    let menuData = []; // Sparar hämtade rätter för att underlätta redigering
+
     if (!token) {
         // Ej inloggad: visa inloggningsformulär, dölj admin-innehåll och utloggningsknapp
         if (authContainer) authContainer.style.display = "block";
@@ -154,6 +156,7 @@ if (protectedContent) {
             const menu = await response.json();
 
             if (response.ok) {
+                menuData = menu; // Spara till lokal array
                 menuList.innerHTML = "";
                 if (menu.length === 0) {
                     menuList.innerHTML = `<tr><td colspan="5">Inga rätter i menyn ännu.</td></tr>`;
@@ -168,7 +171,8 @@ if (protectedContent) {
                             <td>${item.description || '-'}</td>
                             <td>${item.price} kr</td>
                             <td>
-                                <button onclick="deleteMenuItem(${item.id})" style="background-color: #ff4d4d; padding: 0.3rem 0.6rem; font-size: 0.85rem;">Radera</button>
+                                <button type="button" onclick="prepareEdit(${item.id})" style="background-color: #2563eb; color: white; padding: 0.3rem 0.6rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; margin-right: 5px;">Ändra</button>
+                                <button type="button" onclick="deleteMenuItem(${item.id})" style="background-color: #dc2626; color: white; padding: 0.3rem 0.6rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer;">Radera</button>
                             </td>
                         </tr>
                     `;
@@ -187,21 +191,59 @@ if (protectedContent) {
         }
     }
 
-    // Lägg till ny rätt i menyn
+    // Förbered formuläret för att redigera en befintlig rätt
+    window.prepareEdit = function(id) {
+        const item = menuData.find(m => m.id === id);
+        if (!item) return;
+
+        document.getElementById("edit-id").value = item.id;
+        document.getElementById("title").value = item.title;
+        document.getElementById("description").value = item.description || "";
+        document.getElementById("price").value = item.price;
+
+        document.getElementById("form-title").textContent = "Redigera menyobjekt";
+        document.getElementById("submit-btn").textContent = "Spara ändringar";
+        document.getElementById("cancel-edit-btn").style.display = "inline-block";
+
+        document.querySelector(".add-menu-section").scrollIntoView({ behavior: 'smooth' });
+    };
+
+    // Hantera avbryt-knapp vid redigering
+    const cancelEditBtn = document.getElementById("cancel-edit-btn");
+    if (cancelEditBtn) {
+        cancelEditBtn.addEventListener("click", () => {
+            resetFormState();
+        });
+    }
+
+    function resetFormState() {
+        document.getElementById("edit-id").value = "";
+        document.getElementById("add-menu-form").reset();
+        document.getElementById("form-title").textContent = "Lägg till ny rätt i menyn";
+        document.getElementById("submit-btn").textContent = "Lägg till i menyn";
+        document.getElementById("cancel-edit-btn").style.display = "none";
+    }
+
+    // Lägg till ny rätt eller uppdatera befintlig rätt
     const addMenuForm = document.getElementById("add-menu-form");
     if (addMenuForm) {
         addMenuForm.addEventListener("submit", async (e) => {
             e.preventDefault();
 
+            const editId = document.getElementById("edit-id").value;
             const title = document.getElementById("title").value.trim();
             const description = document.getElementById("description").value.trim();
             const price = document.getElementById("price").value.trim();
             const errorEl = document.getElementById("error-message");
             const successEl = document.getElementById("success-message");
 
+            // Välj URL och metod beroende på om vi redigerar eller skapar nytt
+            const url = editId ? `${API_URL}/api/menu/${editId}` : `${API_URL}/api/menu`;
+            const method = editId ? "PUT" : "POST";
+
             try {
-                const response = await fetch(`${API_URL}/api/menu`, {
-                    method: "POST",
+                const response = await fetch(url, {
+                    method: method,
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${token}`
@@ -212,14 +254,15 @@ if (protectedContent) {
                 const data = await response.json();
 
                 if (response.ok) {
-                    successEl.textContent = "Rätten har lagts till i menyn!";
+                    successEl.textContent = editId ? "Rätten har uppdaterats!" : "Rätten har lagts till i menyn!";
                     successEl.style.display = "block";
                     errorEl.textContent = "";
                     errorEl.style.display = "none";
-                    addMenuForm.reset();
+                    
+                    resetFormState();
                     getMenu(); // Uppdatera listan direkt
                 } else {
-                    errorEl.textContent = data.error || "Kunde inte lägga till rätten.";
+                    errorEl.textContent = data.error || "Kunde inte spara rätten.";
                     errorEl.style.display = "block";
                     successEl.textContent = "";
                     successEl.style.display = "none";

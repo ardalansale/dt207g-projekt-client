@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
     <title>Pizzeria Bianconeri | Admin</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -64,12 +64,15 @@
         <!-- DEL 2: SKYDDAT INNEHÅLL -->
         <div id="protected-content" class="protected-section">
             <h2 id="welcome-msg">Adminpanel – Hantera meny</h2>
-            <p>Här kan du lägga till nya rätter eller ta bort befintliga från pizzerians meny.</p>
+            <p>Här kan du lägga till nya rätter, redigera befintliga eller ta bort rätter från pizzerians meny.</p>
 
-            <!-- Formulär för att lägga till ny rätt -->
+            <!-- Formulär för att lägga till / redigera rätt -->
             <div class="add-menu-section">
-                <h3>Lägg till ny rätt i menyn</h3>
+                <h3 id="form-title">Lägg till ny rätt i menyn</h3>
                 <form id="add-menu-form">
+                    <!-- Dolt fält för att lagra ID vid redigering -->
+                    <input type="hidden" id="edit-id" value="">
+
                     <label for="title">Titel / Namn:</label>
                     <input type="text" id="title" placeholder="t.ex. Pizza Vesuvio" required>
 
@@ -79,11 +82,14 @@
                     <label for="price">Pris (kr):</label>
                     <input type="number" id="price" placeholder="0" min="0" required>
 
-                    <button type="submit">Lägg till i menyn</button>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <button type="submit" id="submit-btn">Lägg till i menyn</button>
+                        <button type="button" id="cancel-edit-btn" style="display: none; background-color: #64748b;">Avbryt</button>
+                    </div>
                 </form>
             </div>
 
-            <!-- Tabell för att visa och radera menyartiklar -->
+            <!-- Tabell för att visa, ändra och radera menyartiklar -->
             <h3>Aktuell meny</h3>
             <table>
                 <thead>
