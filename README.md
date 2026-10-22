@@ -1,5 +1,5 @@
 # DT207G Projektarbete - Pizzeria Bianconeri – Administrationsgränssnitt (Frontend)
-Ett klientbaserat administrationsgränssnitt för Pizzeria Bianconeri som kommunicerar med en REST-webbtjänst för att hantera menyn och autentisering via JWT (JSON Web Tokens).
+Ett klientbaserat administrationsgränssnitt för Pizzeria Bianconeri som kommunicerar med en REST-webbtjänst för att hantera menyn, erbjuda bordsbokning och hantera autentisering via JWT.
 
 ## GitHub-repo
 https://github.com/ardalansale/dt207g-projekt-client
@@ -8,18 +8,16 @@ https://github.com/ardalansale/dt207g-projekt-client
 https://dt207g-pizzeria-bianconeri.netlify.app
 
 ## Funktionalitet
-- Registrering av nya adminkonton samt inloggning för befintliga användare.
+- Publik visning av meny samt formulär för bordsbokning.
+- Säker inloggning för personal via förskapat admin-konto (publik registrering borttagen).
 - Lagring och hantering av JWT-tokens i `sessionStorage` för säker autentisering.
-- Skyddad adminpanel som kräver inloggning för åtkomst.
-- Visning av aktuell meny i ett tabellformat.
-- Formulär för att lägga till nya maträtter i menyn (kräver inloggning).
-- Möjlighet att radera maträtter från menyn (kräver inloggning).
-- Utloggningsfunktion som rensar sparad token och omdirigerar användaren.
+- Skyddad adminpanel för fullständig CRUD-hantering av menyn (visa, lägga till, redigera och radera).
+- Utloggningsfunktion som rensar sparad token och återställer gränssnittet.
 
 ## Komponenter och struktur
-- `index.html` – Startsida med formulär för inloggning och konto-registrering.
-- `secret.html` – Skyddad adminpanel för hantering av pizzerians meny (visning, tillägg och radering).
-- `css/style.css` – Stilmall som hanterar layout, typografi, formulär och tabeller.
+- `index.html` – Publik startsida med meny, om oss, öppettider och bordsbokning.
+- `admin.html` – Skyddad adminpanel för inloggning och menyhantering.
+- `css/style.css` – Stilmall som hanterar layout, typografi, formulär, tabeller och responsivitet.
 - `js/main.js` – JavaScript-logik som hanterar formulärhändelser, `fetch`-anrop mot REST API:et och sessionshantering.
 
 ## Tekniker
@@ -31,4 +29,4 @@ https://dt207g-pizzeria-bianconeri.netlify.app
 ## Användning
 1. Klona repot lokalt eller öppna filerna direkt i en webbläsare.
 2. Säkerställ att backend-tjänsten på Render rullar.
-3. Öppna `index.html` för att logga in eller skapa ett nytt konto.
+3. Öppna `index.html` för den publika sidan eller navigera till `admin.html` för att logga in som personal (`admin` / `Juve1987!`).
