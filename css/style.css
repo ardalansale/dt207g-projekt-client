@@ -231,7 +231,18 @@ footer a:hover, .footer-admin a:hover {
     display: none;
 }
 
-/* Admin Tabeller */
+/* Admin Tabeller & Responsiv Wrapper */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-top: 20px;
+}
+
+.table-responsive table {
+    margin-top: 0;
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
@@ -328,7 +339,7 @@ button, .submit-btn {
 }
 
 button:hover, .submit-btn:hover, .edit-btn:hover {
-    background-color: #ff86ed;
+    background-color: #333;
 }
 
 .submit-btn {
