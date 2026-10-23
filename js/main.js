@@ -96,7 +96,7 @@ if (logoutBtn) {
     });
 }
 
-// 5. Adminpanel & Meny-CRUD
+// 5. Adminpanel (Meny-CRUD & Bokningshantering)
 const protectedContent = document.getElementById("protected-content");
 if (protectedContent) {
     const token = sessionStorage.getItem("token");
@@ -112,8 +112,10 @@ if (protectedContent) {
         protectedContent.style.display = "block";
         if (logoutBtn) logoutBtn.style.display = "inline";
         fetchAdminMenu();
+        fetchAdminBookings(); // Hämta även alla bokningar vid inloggning
     }
 
+    // --- MENY-HANTERING ---
     async function fetchAdminMenu() {
         const list = document.getElementById("menu-list");
         if (!list) return;
@@ -206,18 +208,69 @@ if (protectedContent) {
         }
     };
 
+    // --- BOKNINGSHANTERING (Admin) ---
+    async function fetchAdminBookings() {
+        const bookingList = document.getElementById("booking-list");
+        if (!bookingList) return;
+        try {
+            const res = await fetch(`${API_URL}/api/bookings`, {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+            const bookings = await res.json();
+            if (res.ok) {
+                bookingList.innerHTML = bookings.length ? bookings.map((b) => `
+                    <tr>
+                        <td><strong>${b.name}</strong></td>
+                        <td>${b.email}</td>
+                        <td>${b.phone}</td>
+                        <td>${b.date} kl ${b.time}</td>
+                        <td>${b.guests} st</td>
+                        <td>${b.message || "-"}</td>
+                        <td>
+                            <button onclick="deleteBooking(${b.id})" class="table-btn delete-btn">Radera</button>
+                        </td>
+                    </tr>
+                `).join('') : '<tr><td colspan="7" style="text-align:center;">Inga inkomna bokningar.</td></tr>';
+            }
+        } catch {
+            showError("Kunde inte hämta bokningar.");
+        }
+    }
+
+    window.deleteBooking = async (id) => {
+        if (!confirm("Är du säker på att du vill radera denna bokning?")) return;
+        try {
+            const res = await fetch(`${API_URL}/api/bookings/${id}`, {
+                method: "DELETE",
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+            if (res.ok) {
+                showSuccess("Bokningen har raderats!");
+                fetchAdminBookings();
+            }
+        } catch {
+            showError("Kunde inte radera bokningen.");
+        }
+    };
+
     function showSuccess(msg) {
         const el = document.getElementById("success-message");
-        el.textContent = msg;
-        el.style.display = "block";
-        document.getElementById("error-message").style.display = "none";
+        if (el) {
+            el.textContent = msg;
+            el.style.display = "block";
+        }
+        const errEl = document.getElementById("error-message");
+        if (errEl) errEl.style.display = "none";
     }
 
     function showError(msg) {
         const el = document.getElementById("error-message");
-        el.textContent = msg;
-        el.style.display = "block";
-        document.getElementById("success-message").style.display = "none";
+        if (el) {
+            el.textContent = msg;
+            el.style.display = "block";
+        }
+        const succEl = document.getElementById("success-message");
+        if (succEl) succEl.style.display = "none";
     }
 }
 
